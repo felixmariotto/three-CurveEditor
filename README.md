@@ -1,12 +1,14 @@
 # three-CurveEditor
-curve editor for Three.js\
-exemple here : https://felixmariotto.github.io/curve_editor
+### curve editor for Three.js ###
 
-### Curve editor with Three.js ###
 
 CurveEditor creates 'sections' constrituted of chained catmull-rom curves.    
 This sections can be modified with handles, either 'corners' (square button), which basically cut a curve and make two instead,
-or 'twists' (round button) which add a point to the catmull-rom curve. 
+or 'twists' (round button) which add a point to the catmull-rom curve.     
+
+**Exemple here : https://felixmariotto.github.io/curve_editor**
+
+**Click on the curve to add a handle**
 
 ![How it looks like](https://felixmariotto.s3.eu-west-3.amazonaws.com/curve_editor.jpg)
 
