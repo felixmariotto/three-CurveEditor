@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TRHEE BOILERPLATE</title>
+	<meta charset="utf-8">
+	<script src="./libs/three.js"></script>
+	<script src="./libs/orbitControls.js"></script>
+	<script src="./libs/stats.min.js"></script>
+	<script src="./libs/customGeometryTools.js"></script>
+	<script src="./libs/CurveEditor.js"></script>
+
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			font-family: Courier;
+		}
+
+		body {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+
+		div {
+			position: fixed;
+			top: 5vh;
+			right: 5vh;
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+		}
+
+		input {
+			margin: 10px;
+			padding: 10px;
+		}
+	</style>
+
+</head>
+
+
+
+<body>
+
+	<div>
+		
+		<input type="button" name="button" value="delete" onclick="onClickDelete()">
+
+		<input type="button" name="button" value="switch handle type" onclick="onClickSwitch()">
+		next handle type :<span id="info">twist</span>
+
+	</div>
+	
+
+	<script type="text/javascript">
+
+		
+		
+		var scene, renderer, camera, controls, stats;
+		var mouse ;
+		const WIDTH = window.innerWidth;
+		const HEIGHT = window.innerHeight;
+
+		var editor;
+
+
+
+		window.addEventListener('load', function() {
+			main();
+			loop();
+		});
+
+		window.addEventListener( 'mousedown', onMouseClick, false );
+
+
+		function onMouseClick( event ) {
+			mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+			mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+		
+			editor.raycast( mouse );
+		};
+
+
+		function onClickDelete() {
+			editor.deleteHandle( 'glass' );
+		};
+
+
+		function onClickSwitch() {
+			let domElem = document.getElementById('info');
+			domElem.innerHTML = domElem.innerHTML == 'twist' ?
+													'corner' :
+													'twist' ;
+			editor.switchHandleType();
+		};
+
+
+
+		function main() {
+
+			scene = new THREE.Scene();
+			scene.background = new THREE.Color(0xd0ffc1);
+
+			camera = new THREE.PerspectiveCamera(30, WIDTH/HEIGHT, 0.1, 1000);
+			camera.position.set(0, 0, 30);
+
+			renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+			renderer.setSize(WIDTH, HEIGHT);
+			document.body.appendChild(renderer.domElement);
+
+			stats = new Stats();
+			document.body.appendChild(stats.dom);
+
+			mouse = new THREE.Vector2();
+
+			editor = CurveEditor();
+
+			var light = new THREE.DirectionalLight( 0xffddcc, 1 );
+			light.position.set( 1, 0.75, 0.5 );
+			scene.add( light );
+
+			var light = new THREE.DirectionalLight( 0xccccff, 1 );
+			light.position.set( - 1, -0.75, - 0.5 );
+			scene.add( light );
+			
+
+
+			////////////////////
+			///	CUSTOM CODE
+			////////////////////
+
+			//// Create curve
+
+			var section = editor.Section( 'mysection', [
+				[ "corner", new THREE.Vector3( 6, -3, 0 ) ],
+				[ "corner", new THREE.Vector3( -4, -3, 0 ) ],
+				[ "twist", new THREE.Vector3( -2, 1, 0 ) ],
+				[ "twist", new THREE.Vector3( -0, 0, 0 ) ],
+				[ "corner", new THREE.Vector3( 4, 3, 0 ) ]
+			]);
+
+		};
+
+
+
+
+		function loop() {
+			requestAnimationFrame(loop);
+			renderer.render(scene, camera);
+			stats.update();
+			editor.update();
+		};
+
+
+	</script>
+
+</body>
+</html>
