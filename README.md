@@ -36,7 +36,7 @@ function loop() {
 
 Delete handle :
 ```javascript
-editor.deleteHandle( 'glass' );
+editor.deleteHandle( 'mysection' );
 ```
 
 Switch handle type :
